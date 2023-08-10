@@ -1,41 +1,40 @@
-
-#include "Board.h"
 #include <iostream>
-#include <iomanip>
+#include "Board.hpp"
 
 Board::Board()
 {
-    for (int i = 0; i < BOARD_SIZE; ++i)
+    for(int i = 0 ; i < BOARD_SIZE ; i++)
     {
-        for (int j = 0; j < BOARD_SIZE; ++j)
+        for(int j = 0 ; j < BOARD_SIZE ; j++)
         {
-            grid[i][j] = ' ';
+            Grid[i][j] = '.';
         }
     }
 }
 
-void Board::display(bool showShips)
+void Board::Display()
 {
-    std::cout << "  ";
-    for (int i = 0; i < BOARD_SIZE; ++i)
+    std::cout << "\n";
+    std::cout << "\t\t  ";
+    for(int j = 0 ; j < BOARD_SIZE ; j++)
     {
-        std::cout << static_cast<char>('A' + i) << " ";
+        std::cout << " " << j << " ";
+    }
+    std::cout << "\n";
+        
+    std::cout << "\t\t  ";
+    for(int j = 0 ; j < BOARD_SIZE ; j++)
+    {
+        std::cout << "---";
     }
     std::cout << "\n";
 
-    for (int i = 0; i < BOARD_SIZE; ++i)
+    for(int i = 0 ; i < BOARD_SIZE ; i++)
     {
-        std::cout << std::setw(2) << i + 1;
-        for (int j = 0; j < BOARD_SIZE; ++j)
+        std::cout << "\t\t" << static_cast<char>('A' + i) << "|" ;
+        for(int j = 0 ; j < BOARD_SIZE ; j++)
         {
-            if (showShips || grid[i][j] != 'S')
-            {
-                std::cout << " " << grid[i][j];
-            }
-            else
-            {
-                std::cout << "  ";
-            }
+            std::cout << " " << Grid[i][j] << " " ;
         }
         std::cout << "\n";
     }
@@ -48,25 +47,6 @@ bool Board::isValidPosition(int x, int y)
 
 bool Board::placeShip(int x, int y, int length, char direction)
 {
-    // Place a ship on the board and update the ships vector
+    return true;
 }
 
-char Board::getCell(int x, int y)
-{
-    return grid[x][y];
-}
-
-void Board::setCell(int x, int y, char value)
-{
-    grid[x][y] = value;
-}
-
-bool Board::isShipCell(int x, int y)
-{
-    return grid[x][y] == 'S';
-}
-
-bool Board::receiveAttack(int x, int y)
-{
-    // Handle attack and update the grid and ships
-}
