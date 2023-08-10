@@ -1,4 +1,4 @@
-#include "game.h"
+#include "Game.hpp"
 
 int main()
 {
@@ -6,6 +6,6 @@ int main()
 
     game.setup();
     game.play();
-    
+
     return 0;
 }
