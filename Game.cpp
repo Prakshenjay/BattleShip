@@ -3,24 +3,44 @@
 #include <iomanip>
 #include "Game.hpp"
 
+void delayAnimation()
+{
+    std::cout << "Loading...";
+    
+    for (int i = 0; i < 5; ++i)
+    {
+        std::cout << ".";
+        std::cout.flush();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    }
+    
+    std::cout << "\n\nLoading complete!\n\n";
+}
+
 void Game::setup()
 {
     system("clear");
     
     std::string name;
-    std::cout << "Enter Player's Name : ";
+    std::cout << "\tEnter Player's Name : ";
     std::cin >> name;
     player.giveName(name);
     
-    std::cout << "Place your ships" << std::endl;
+    std::cout << "\tPlace your ships" << std::endl;
     player.placeShips();
 
     computer.giveName("Computer");
     
-    std::cout << "Computer is placing its ships.\n";
+    system("clear");
+    
+    std::cout << "\tComputer is placing its ships.\n";
     computer.placeShips();
+    
+    delayAnimation();
 
-    std::cout << "Game is set up and ready to play!\n";
+    std::cout << "\tGame is set up and ready to play!\n";
+    
+    delayAnimation();
 }
 
 void Game::play()
@@ -60,14 +80,14 @@ void Game::play()
             std::cout << "\t\t" << static_cast<char>('A' + i) << "|" ;
             for(int j = 0 ; j < 10 ; j++)
             {
-                std::cout << " " << playerBoard.Grid[i][j] << " " ;
+                std::cout << " " << player.Grid[i][j] << " " ;
             }
             std::cout << "\t\t";
             
             std::cout << "\t\t" << static_cast<char>('A' + i) << "|" ;
             for(int j = 0 ; j < 10 ; j++)
             {
-                std::cout << " " << computerBoard.Grid[i][j] << " " ;
+                std::cout << " " ; if(computer.Grid[i][j] != 'S') std::cout << computer.Grid[i][j] ; else std::cout << '.' ; std::cout << " " ;
             }
             std::cout << "\t\t";
             
@@ -82,8 +102,8 @@ void Game::play()
         //--------------------------------------------------------------------------------//
         
         std::cout << "\n" << currentPlayer->getName() << "'s Turn:\n";
-
-        bool turnOver = currentPlayer->takeTurn();
+        
+        currentPlayer->takeTurn(*opponent);
 
         if (opponent->hasLost())
         {
@@ -91,9 +111,6 @@ void Game::play()
             break;
         }
 
-        if (turnOver)
-        {
-            std::swap(currentPlayer, opponent);
-        }
+        std::swap(currentPlayer, opponent);
     }
 }
