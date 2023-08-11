@@ -2,9 +2,10 @@
 #define GAME_HPP
 
 #include <iostream>
+#include <chrono>
+#include <thread>
 #include "Player.hpp"
 #include "Computer.hpp"
-#include "Board.hpp"
 
 class Game
 {
@@ -14,6 +15,7 @@ private :
 
 public :
         void setup();
+        void printSetup();
         void play();
 };
 
