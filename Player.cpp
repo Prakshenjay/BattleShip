@@ -1,10 +1,53 @@
 #include <iostream>
 #include "Player.hpp"
-#include "Game.hpp"
+
+Player::Player()
+{
+    for(int i = 0 ; i < BOARD_SIZE ; i++)
+    {
+        for(int j = 0 ; j < BOARD_SIZE ; j++)
+        {
+            Grid[i][j] = '.';
+        }
+    }
+}
 
 void Player::giveName(std::string name)
 {
     playerName = name;
+}
+
+std::string Player::getName()
+{
+    return playerName;
+}
+
+void Player::display()
+{
+    std::cout << "\n";
+    std::cout << "\t\t  ";
+    for(int j = 0 ; j < BOARD_SIZE ; j++)
+    {
+        std::cout << " " << j << " ";
+    }
+    std::cout << "\n";
+    //    
+    std::cout << "\t\t  ";
+    for(int j = 0 ; j < BOARD_SIZE ; j++)
+    {
+        std::cout << "---";
+    }
+    std::cout << "\n";
+    //
+    for(int i = 0 ; i < BOARD_SIZE ; i++)
+    {
+        std::cout << "\t\t" << static_cast<char>('A' + i) << "|" ;
+        for(int j = 0 ; j < BOARD_SIZE ; j++)
+        {
+            std::cout << " " << Grid[i][j] << " " ;
+        }
+        std::cout << "\n";
+    }
 }
 
 void Player::placeShips()
@@ -16,36 +59,70 @@ void Player::placeShips()
         int x, y;
         char direction;
 
+        display();
+
         std::cout << "Placing " << shipLength[i] << "-length ship.\n";
-        do
+        
+        std::cout << "Enter starting coordinates (e.g., A3): ";
+        std::string coords;
+        std::cin >> coords;
+
+        x = coords[0] - 'A';
+        y = coords[1] - '0';
+
+        std::cout << "Enter direction (H for horizontal, V for vertical): ";
+        std::cin >> direction;
+
+        for(int j = 0 ; j < shipLength[i] ; j++)
         {
-            std::cout << "Enter starting coordinates (e.g., A3): ";
-            std::string coords;
-            std::cin >> coords;
-
-            x = coords[1] - '1';
-            y = coords[0] - 'A';
-
-            std::cout << "Enter direction (H for horizontal, V for vertical): ";
-            std::cin >> direction;
-
-        } while (!playerBoard.isValidPosition(x, y) || !playerBoard.placeShip(x, y, shipLength[i], direction));
-
-        playerBoard.Display(); 
+            if(direction == 'H')
+                Grid[x][y+j] = 'S';
+            else
+                Grid[x+j][y] = 'S';
+        }
     }
 }
 
-bool Player::takeTurn()
+void Player::takeTurn(Player& opponent)
 {
+    int x, y;
 
+    do
+    {
+        std::cout << "Enter attack coordinates (e.g., A3): ";
+        std::string coords;
+        std::cin >> coords;
+
+        x = coords[0] - 'A';
+        y = coords[1] - '0';
+
+    } while (opponent.Grid[x][y] == '*' || opponent.Grid[x][y] == '*');
+
+    std::cout << "You attack " << static_cast<char>('A' + x) << y << ". ";
+
+    if (opponent.Grid[x][y] == 'S')
+    {
+        std::cout << "It's a hit!\n";
+        opponent.Grid[x][y] = 'X';
+    }
+    else
+    {
+        std::cout << "It's a miss.\n";
+        opponent.Grid[x][y] = '*';
+    }
 }
 
 bool Player::hasLost()
 {
-
-}
-
-std::string Player::getName()
-{
-    return playerName;
+    for (int i = 0; i < BOARD_SIZE; i++)
+    {
+        for (int j = 0; j < BOARD_SIZE; j++)
+        {
+            if (Grid[i][j] == 'S')
+            {
+                return false;
+            }
+        }
+    }
+    return true;
 }
