@@ -1,19 +1,19 @@
 #include "Game.hpp"
 
-void printArt(string filename)
+void printArt(std::string filename)
 {
     filename += ".txt";
     
-    fstream newfile;
+    std::fstream newfile;
 
-    newfile.open( filename , ios::in);
+    newfile.open( filename , std::ios::in);
 
     if (newfile.is_open())
     {
-        string tp;
+        std::string tp;
         while (getline(newfile, tp))
         {
-            cout << tp << "\n";
+            std::cout << tp << "\n";
         }
         newfile.close();
     }
